@@ -1,0 +1,39 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.feature_selection import chi2
+from sklearn.preprocessing import LabelEncoder
+
+
+df = pd.read_csv('Contacts/loandata.csv.xls')
+
+
+df = df[['Gender','Married','Dependents','Education','Self_Employed',
+         'Credit_History','Property_Area','Loan_Status']]
+
+
+for col in df.columns:
+    le = LabelEncoder()
+    df[col] = le.fit_transform(df[col])
+
+print("Encoded DataFrame:")
+print(df.head())
+
+
+x = df.iloc[:, 0:6]
+y = df.iloc[:, -1]
+
+f_score = chi2(x, y)
+p_value = pd.Series(f_score[1], index=x.columns)
+p_value.sort_values(ascending=False, inplace=True)
+
+print("\nChi-squared p-values:")
+print(p_value)
+
+
+p_value.plot(kind="bar")
+plt.xlabel("Features", fontsize=14)
+plt.ylabel("p-values", fontsize=14)
+plt.title("Chi-squared Test Based on p-values")
+plt.show()
