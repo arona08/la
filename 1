@@ -1,0 +1,42 @@
+import pandas as pd
+import numpy as np
+
+
+dataset = pd.read_csv("Contacts/suv_data.csv.xls")
+print(dataset.head())
+
+# Feature and target extraction
+x = dataset.iloc[:, [2, 3]].values
+y = dataset.iloc[:, 4].values
+print(x)
+print(y)
+
+
+print(dataset[dataset['Gender'].isnull()])
+
+
+print(dataset[dataset['Gender'].notnull()])
+
+
+print(dataset[10:25])
+
+
+new_data = dataset.dropna(axis=0, how='any')
+print(new_data)
+
+dataset = dataset.fillna(-99)
+
+
+dataset["Gender"] = dataset["Gender"].fillna("No Gender")
+
+print("\nOld data frame length:", len(dataset))
+print("New data frame length:", len(new_data))
+print("Number of rows with at least 1 NA value:", len(dataset) - len(new_data))
+
+
+new_df1 = dataset.ffill()
+print(new_df1)
+
+
+new_df3 = dataset.dropna(how='all')
+print(new_df3)
