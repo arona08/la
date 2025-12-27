@@ -1,0 +1,52 @@
+import pandas as pd
+import numpy as np
+
+
+dataset = pd.read_csv("Contacts/suv_data.csv.xls")
+print("First 5 rows of dataset:")
+print(dataset.head())
+
+
+x = dataset.iloc[:, [2, 3]].values
+y = dataset.iloc[:, 4].values
+print("\nFeatures (x):")
+print(x)
+print("\nTarget (y):")
+print(y)
+
+
+print("\nRows with missing Gender:")
+print(dataset[dataset['Gender'].isnull()])
+
+print("\nRows with non-missing Gender:")
+print(dataset[dataset['Gender'].notnull()])
+
+
+print("\nRows 10 to 25:")
+print(dataset[10:25])
+
+
+new_data = dataset.dropna(axis=0, how='any')
+print("\nData after dropping rows with any NA values:")
+print(new_data)
+
+
+dataset.replace(to_replace=np.nan, value=-99, inplace=True)
+
+
+dataset["Gender"].fillna("No Gender", inplace=True)
+
+
+print("\nOld data frame length:", len(dataset))
+print("New data frame length:", len(new_data))
+print("Number of rows with at least 1 NA value:", len(dataset) - len(new_data))
+
+
+new_df1 = dataset.fillna(method="ffill")
+print("\nData after forward fill:")
+print(new_df1)
+
+
+new_df3 = dataset.dropna(how='all')
+print("\nData after dropping rows with all NA values:")
+print(new_df3)
